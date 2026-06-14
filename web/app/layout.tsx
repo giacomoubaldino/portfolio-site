@@ -36,8 +36,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="it" className={`${cormorant.variable} ${syne.variable} ${inter.variable}`}>
       <head>
-        <link rel="icon" href="/bg.png" type="image/png" />
-      </head>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23d10901'/><text x='50' y='72' font-size='68' font-family='Georgia,serif' fill='white' text-anchor='middle'>G</text></svg>" />
+</head>
       <body style={{ fontFamily: 'var(--font-inter)' }}>
         <Navigation />
         {children}

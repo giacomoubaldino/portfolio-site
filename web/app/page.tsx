@@ -12,16 +12,16 @@ export default async function Home() {
 
   return (
     <main>
-      <Hero />
-      <div className="mt-8">
-        <QuickCTA />
-      </div>
-      <div className="mt-24">
-        <ProjectsSection projects={projects} />
-      </div>
-      <div className="mt-16">
-        <ContactSection />
-      </div>
-    </main>
+  <Hero />
+  <div style={{ marginTop: '60px' }}>
+    <QuickCTA />
+  </div>
+  <div style={{ marginTop: '80px' }}>
+    <ProjectsSection projects={projects} />
+  </div>
+  <div style={{ marginTop: '60px' }}>
+    <ContactSection />
+  </div>
+</main>
   )
 }

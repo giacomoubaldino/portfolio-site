@@ -21,19 +21,17 @@ export default function Hero() {
 
   return (
     <section style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100svh',
-      paddingTop: '6rem',
-      paddingBottom: '4rem',
-      paddingLeft: '1.5rem',
-      paddingRight: '1.5rem',
-      textAlign: 'center',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  paddingTop: '140px',
+  paddingBottom: '80px',
+  paddingLeft: '1.5rem',
+  paddingRight: '1.5rem',
+  textAlign: 'center',
+  position: 'relative',
+  overflow: 'hidden',
+}}>
       <motion.div
         className="pointer-events-none fixed inset-0"
         style={{

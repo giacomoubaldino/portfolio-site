@@ -6,7 +6,7 @@ export default function QuickCTA() {
   return (
     <section className="px-6 pb-16 flex justify-center">
       <motion.div
-        className="w-full max-w-xl text-center"
+        className="w-full max-w-xs md:max-w-sm text-center"
         style={{
           background: 'rgba(255,255,255,0.025)',
           border: '1px solid rgba(255,255,255,0.08)',

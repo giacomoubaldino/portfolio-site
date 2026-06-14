@@ -7,7 +7,7 @@ export default function ContactSection() {
     <section id="contact" className="py-24 px-6 border-t border-[#111]">
       <div className="flex justify-center mb-20">
         <motion.div
-          className="w-full max-w-xl text-center"
+          className="w-full max-w-xs md:max-w-sm text-center"
           style={{
             background: 'rgba(255,255,255,0.025)',
             border: '1px solid rgba(255,255,255,0.08)',

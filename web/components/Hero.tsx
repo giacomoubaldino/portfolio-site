@@ -20,7 +20,7 @@ export default function Hero() {
   }, [mouseX, mouseY])
 
   return (
-    <section className="flex flex-col items-center px-6 pt-40 pb-16 text-center relative overflow-hidden">
+    <section className="flex flex-col items-center px-6 pt-56 pb-16 text-center relative overflow-hidden">
       <motion.div
         className="pointer-events-none fixed inset-0 z-0"
         style={{

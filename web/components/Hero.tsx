@@ -20,7 +20,7 @@ export default function Hero() {
   }, [mouseX, mouseY])
 
   return (
-    <section className="flex flex-col items-center px-6 pt-28 pb-16 text-center relative overflow-hidden">
+    <section className="flex flex-col items-center px-6 pt-40 pb-16 text-center relative overflow-hidden">
       <motion.div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -35,7 +35,7 @@ export default function Hero() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <motion.div
-          className="relative w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-8"
+          className="relative w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-10"
           style={{ boxShadow: '0 0 40px rgba(209,9,1,0.3), 0 0 0 1.5px #d10901' }}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -45,13 +45,15 @@ export default function Hero() {
           <Image src="/bg.png" alt="Giacomo Ubaldino" fill className="object-cover" priority />
         </motion.div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-4">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-5">
           <span className="text-white">Giacomo </span>
-          <span className="relative inline-block text-white">
-            <span
-              className="absolute bottom-0 left-0 right-0"
-              style={{ height: '35%', background: 'rgba(209,9,1,0.35)', zIndex: -1 }}
-            />
+          <span
+            style={{
+              color: 'white',
+              background: 'linear-gradient(to bottom, transparent 52%, rgba(209,9,1,0.5) 52%)',
+              display: 'inline',
+            }}
+          >
             Ubaldino
           </span>
         </h1>

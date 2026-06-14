@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="py-24 px-6 border-t border-[#111]">
+    <section id="contact" style={{ padding: '2.5rem 1.5rem 2.5rem', borderTop: '1px solid #111' }}>
       <div className="flex justify-center mb-20">
         <motion.div
           className="w-full max-w-xs md:max-w-sm text-center"

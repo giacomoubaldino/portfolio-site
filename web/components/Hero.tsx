@@ -24,7 +24,7 @@ export default function Hero() {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  paddingTop: '140px',
+  paddingTop: '90px',
   paddingBottom: '80px',
   paddingLeft: '1.5rem',
   paddingRight: '1.5rem',

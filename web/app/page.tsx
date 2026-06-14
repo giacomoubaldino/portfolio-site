@@ -13,13 +13,13 @@ export default async function Home() {
   return (
     <main>
   <Hero />
-  <div style={{ marginTop: '60px' }}>
+  <div style={{ marginTop: '30px' }}>
     <QuickCTA />
   </div>
   <div style={{ marginTop: '80px' }}>
     <ProjectsSection projects={projects} />
   </div>
-  <div style={{ marginTop: '60px' }}>
+  <div style={{ marginTop: '20px' }}>
     <ContactSection />
   </div>
 </main>

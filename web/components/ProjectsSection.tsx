@@ -49,7 +49,7 @@ export default function ProjectsSection({ projects }: { projects: any[] }) {
               }}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -80px 0px" }}
               transition={{ duration: 0.7, delay: catIndex * 0.1 }}
             >
               <div style={{ marginBottom: '2rem' }}>
@@ -76,7 +76,7 @@ export default function ProjectsSection({ projects }: { projects: any[] }) {
                     }}
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "0px 0px -80px 0px" }}
                     transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
                   />
                   {cat.label}
@@ -89,7 +89,7 @@ export default function ProjectsSection({ projects }: { projects: any[] }) {
                     key={project._id}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "0px 0px -80px 0px" }}
                     transition={{ duration: 0.4, delay: i * 0.08 }}
                   >
                     <ProjectCard project={project} />

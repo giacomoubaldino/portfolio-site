@@ -1,6 +1,7 @@
 import { client } from '@/sanity/client'
 import { projectsQuery } from '@/sanity/queries'
 import Hero from '@/components/Hero'
+import QuickCTA from '@/components/QuickCTA'
 import ProjectsSection from '@/components/ProjectsSection'
 import ContactSection from '@/components/ContactSection'
 
@@ -12,6 +13,7 @@ export default async function Home() {
   return (
     <main>
       <Hero />
+      <QuickCTA />
       <ProjectsSection projects={projects} />
       <ContactSection />
     </main>

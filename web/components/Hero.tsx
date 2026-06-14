@@ -40,7 +40,7 @@ export default function Hero() {
           style={{ fontFamily: 'var(--font-syne)' }}
           className="text-[#666] text-xs md:text-sm font-medium tracking-widest uppercase mb-8"
         >
-          Video Editor & Content Marketing
+          Video Editor &amp; Content Marketing
         </p>
 
         <p className="text-lg md:text-2xl font-bold text-white mb-10">
@@ -58,22 +58,33 @@ export default function Hero() {
         </motion.button>
 
         <div className="flex gap-8">
-          {[
-            { label: 'Instagram', href: 'https://www.instagram.com/giacomoubaldino/' },
-            { label: 'TikTok', href: 'https://www.tiktok.com/@giacomoubaldino' },
-            { label: 'YouTube', href: 'https://www.youtube.com/@giacomoubaldino' },
-          ].map(({ label, href }) => (
-            
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontFamily: 'var(--font-syne)' }}
-              className="text-[#444] hover:text-white text-sm transition-colors duration-200"
-            >
-              {label}
-            </a>
-          ))}
+          
+            href="https://www.instagram.com/giacomoubaldino/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontFamily: 'var(--font-syne)' }}
+            className="text-[#444] hover:text-white text-sm transition-colors duration-200"
+          >
+            Instagram
+          </a>
+          
+            href="https://www.tiktok.com/@giacomoubaldino"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontFamily: 'var(--font-syne)' }}
+            className="text-[#444] hover:text-white text-sm transition-colors duration-200"
+          >
+            TikTok
+          </a>
+          
+            href="https://www.youtube.com/@giacomoubaldino"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontFamily: 'var(--font-syne)' }}
+            className="text-[#444] hover:text-white text-sm transition-colors duration-200"
+          >
+            YouTube
+          </a>
         </div>
       </motion.div>
     </section>

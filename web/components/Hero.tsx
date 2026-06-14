@@ -57,35 +57,17 @@ export default function Hero() {
           Guarda il mio lavoro
         </motion.button>
 
-        <div className="flex gap-8">
-          
-            href="https://www.instagram.com/giacomoubaldino/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontFamily: 'var(--font-syne)' }}
-            className="text-[#444] hover:text-white text-sm transition-colors duration-200"
-          >
-            Instagram
-          </a>
-          
-            href="https://www.tiktok.com/@giacomoubaldino"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontFamily: 'var(--font-syne)' }}
-            className="text-[#444] hover:text-white text-sm transition-colors duration-200"
-          >
-            TikTok
-          </a>
-          
-            href="https://www.youtube.com/@giacomoubaldino"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontFamily: 'var(--font-syne)' }}
-            className="text-[#444] hover:text-white text-sm transition-colors duration-200"
-          >
-            YouTube
-          </a>
-        </div>
+        <div style={{ display: 'flex', gap: '2rem' }}>
+  <a href="https://www.instagram.com/giacomoubaldino/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
+    Instagram
+  </a>
+  <a href="https://www.tiktok.com/@giacomoubaldino" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
+    TikTok
+  </a>
+  <a href="https://www.youtube.com/@giacomoubaldino" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
+    YouTube
+  </a>
+</div>
       </motion.div>
     </section>
   )

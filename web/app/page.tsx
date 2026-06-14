@@ -13,9 +13,15 @@ export default async function Home() {
   return (
     <main>
       <Hero />
-      <QuickCTA />
-      <ProjectsSection projects={projects} />
-      <ContactSection />
+      <div className="mt-8">
+        <QuickCTA />
+      </div>
+      <div className="mt-24">
+        <ProjectsSection projects={projects} />
+      </div>
+      <div className="mt-16">
+        <ContactSection />
+      </div>
     </main>
   )
 }

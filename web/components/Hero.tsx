@@ -4,12 +4,8 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 export default function Hero() {
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center">
+    <section className="flex flex-col items-center px-6 pt-32 pb-24 text-center">
       <motion.div
         className="flex flex-col items-center"
         initial={{ opacity: 0, y: 30 }}
@@ -23,51 +19,37 @@ export default function Hero() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <Image
-            src="/bg.png"
-            alt="Giacomo Ubaldino"
-            fill
-            className="object-cover"
-            priority
-          />
+          <Image src="/bg.png" alt="Giacomo Ubaldino" fill className="object-cover" priority />
         </motion.div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight mb-3">
-          Giacomo Ubaldino
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-3">
+          <span className="text-white">Giacomo </span>
+          <span className="text-[#d10901]">Ubaldino</span>
         </h1>
 
-        <p
-          style={{ fontFamily: 'var(--font-syne)' }}
-          className="text-[#666] text-xs md:text-sm font-medium tracking-widest uppercase mb-8"
-        >
-          Video Editor &amp; Content Marketing
+        <p style={{
+          fontFamily: 'var(--font-syne)',
+          letterSpacing: '0.22em',
+          color: '#d10901',
+          fontSize: '0.7rem',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          marginBottom: '2.5rem'
+        }}>
+          Video Editor & Content Marketing
         </p>
-
-        <p className="text-lg md:text-2xl font-bold text-white mb-10">
-          <span className="bg-[#d10901] px-3 py-1.5">Fermo lo scroll.</span>
-        </p>
-
-        <motion.button
-          onClick={scrollToProjects}
-          style={{ fontFamily: 'var(--font-syne)' }}
-          className="border border-white text-white px-8 py-4 text-sm font-medium tracking-wide hover:bg-white hover:text-black transition-colors duration-300 mb-12"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          Guarda il mio lavoro
-        </motion.button>
 
         <div style={{ display: 'flex', gap: '2rem' }}>
-  <a href="https://www.instagram.com/giacomoubaldino/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
-    Instagram
-  </a>
-  <a href="https://www.tiktok.com/@giacomoubaldino" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
-    TikTok
-  </a>
-  <a href="https://www.youtube.com/@giacomoubaldino" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
-    YouTube
-  </a>
-</div>
+          <a href="https://www.instagram.com/giacomoubaldino/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
+            Instagram
+          </a>
+          <a href="https://www.tiktok.com/@giacomoubaldino" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
+            TikTok
+          </a>
+          <a href="https://www.youtube.com/@giacomoubaldino" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-syne)', color: '#444', fontSize: '0.875rem', textDecoration: 'none' }}>
+            YouTube
+          </a>
+        </div>
       </motion.div>
     </section>
   )

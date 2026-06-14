@@ -6,9 +6,9 @@ import ProjectCard from './ProjectCard'
 
 const filters = [
   { label: 'Tutti', value: 'all' },
-  { label: 'Personal Brand', value: 'personal-brand' },
-  { label: 'Brand & Advertising', value: 'brand-advertising' },
-  { label: 'Social Content', value: 'social-content' },
+  { label: 'Premium', value: 'premium' },
+  { label: 'Pro', value: 'pro' },
+  { label: 'Essential', value: 'essential' },
 ]
 
 export default function ProjectsSection({ projects }: { projects: any[] }) {

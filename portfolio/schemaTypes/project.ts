@@ -23,13 +23,13 @@ export default defineType({
       title: 'Categoria',
       type: 'string',
       options: {
-        list: [
-          { title: 'Personal Brand', value: 'personal-brand' },
-          { title: 'Brand & Advertising', value: 'brand-advertising' },
-          { title: 'Social Content', value: 'social-content' },
-        ],
-        layout: 'radio',
-      },
+  list: [
+    { title: 'Premium', value: 'premium' },
+    { title: 'Pro', value: 'pro' },
+    { title: 'Essential', value: 'essential' },
+  ],
+  layout: 'radio',
+},
       validation: Rule => Rule.required(),
     }),
     defineField({

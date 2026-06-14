@@ -25,6 +25,10 @@ const merriweather = Merriweather({
 export const metadata: Metadata = {
   title: 'Giacomo Ubaldino — Video Editor',
   description: 'Video editor e content creator specializzato in short-form content per brand italiani.',
+  icons: {
+    icon: '/bg.png',
+    apple: '/bg.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

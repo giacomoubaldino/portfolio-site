@@ -1,7 +1,14 @@
 import type { Metadata } from 'next'
-import { Syne, Inter, Merriweather } from 'next/font/google'
+import { Cormorant_Garamond, Syne, Inter } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  variable: '--font-cormorant',
+  weight: ['300', '400', '600', '700'],
+  style: ['normal', 'italic'],
+})
 
 const syne = Syne({
   subsets: ['latin'],
@@ -15,25 +22,22 @@ const inter = Inter({
   weight: ['400', '500', '600'],
 })
 
-const merriweather = Merriweather({
-  subsets: ['latin'],
-  variable: '--font-merriweather',
-  weight: ['300', '400', '700'],
-  style: ['normal', 'italic'],
-})
-
 export const metadata: Metadata = {
   title: 'Giacomo Ubaldino — Video Editor',
   description: 'Video editor e content creator specializzato in short-form content per brand italiani.',
   icons: {
-    icon: '/bg.png',
-    apple: '/bg.png',
+    icon: [{ url: '/bg.png', type: 'image/png' }],
+    shortcut: [{ url: '/bg.png' }],
+    apple: [{ url: '/bg.png' }],
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it" className={`${syne.variable} ${inter.variable} ${merriweather.variable}`}>
+    <html lang="it" className={`${cormorant.variable} ${syne.variable} ${inter.variable}`}>
+      <head>
+        <link rel="icon" href="/bg.png" type="image/png" />
+      </head>
       <body style={{ fontFamily: 'var(--font-inter)' }}>
         <Navigation />
         {children}

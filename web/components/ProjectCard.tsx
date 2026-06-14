@@ -13,51 +13,92 @@ interface Project {
   category: string
   thumbnail: any
   videoUrl?: string
-  description?: string
-  featured?: boolean
 }
 
 export default function ProjectCard({ project }: { project: Project }) {
   const [showModal, setShowModal] = useState(false)
-
-  const categoryLabels: Record<string, string> = {
-    'personal-brand': 'Personal Brand',
-    'brand-advertising': 'Brand & Advertising',
-    'social-content': 'Social Content',
-  }
+  const [isHovered, setIsHovered] = useState(false)
 
   return (
     <>
       <motion.div
-        className="group relative bg-[#111] overflow-hidden cursor-pointer"
+        style={{
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(255,255,255,0.09)',
+          borderRadius: '14px',
+          overflow: 'hidden',
+          cursor: project.videoUrl ? 'pointer' : 'default',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+        }}
         whileHover={{ y: -4 }}
-        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: 0.3 }}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
         onClick={() => project.videoUrl && setShowModal(true)}
       >
-        <div className="relative aspect-video overflow-hidden">
+        <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
           {project.thumbnail && (
             <Image
-              src={urlFor(project.thumbnail).width(800).height(450).url()}
+              src={urlFor(project.thumbnail).width(600).height(340).url()}
               alt={project.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              style={{
+                objectFit: 'cover',
+                transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                transition: 'transform 0.5s ease',
+              }}
             />
           )}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-all duration-300 flex items-center justify-center">
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: isHovered ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
+            transition: 'background 0.3s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
             {project.videoUrl && (
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-14 h-14 rounded-full border-2 border-white flex items-center justify-center">
-                <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[14px] border-l-white border-b-[8px] border-b-transparent ml-1" />
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                border: '2px solid white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: isHovered ? 1 : 0,
+                transform: isHovered ? 'scale(1)' : 'scale(0.8)',
+                transition: 'opacity 0.3s, transform 0.3s',
+              }}>
+                <div style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: '7px solid transparent',
+                  borderLeft: '12px solid white',
+                  borderBottom: '7px solid transparent',
+                  marginLeft: '3px',
+                }} />
               </div>
             )}
           </div>
         </div>
-        <div className="p-4">
-          <span className="text-[#d10901] text-xs font-medium tracking-wider uppercase">
-            {categoryLabels[project.category] || project.category}
-          </span>
-          <h3 className="text-white font-semibold mt-1 leading-tight">{project.title}</h3>
+
+        <div style={{ padding: '0.75rem 0.875rem' }}>
+          <h3 style={{
+            color: 'white',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            lineHeight: 1.3,
+            marginBottom: project.client ? '0.25rem' : 0,
+          }}>
+            {project.title}
+          </h3>
           {project.client && (
-            <p className="text-[#666] text-sm mt-1">{project.client}</p>
+            <p style={{ color: '#555', fontSize: '0.75rem' }}>
+              {project.client}
+            </p>
           )}
         </div>
       </motion.div>

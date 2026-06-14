@@ -20,40 +20,80 @@ export default function Hero() {
   }, [mouseX, mouseY])
 
   return (
-    <section className="flex flex-col items-center px-6 pt-72 pb-24 text-center relative overflow-hidden">
+    <section style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100svh',
+      paddingTop: '6rem',
+      paddingBottom: '4rem',
+      paddingLeft: '1.5rem',
+      paddingRight: '1.5rem',
+      textAlign: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
       <motion.div
-        className="pointer-events-none fixed inset-0 z-0"
+        className="pointer-events-none fixed inset-0"
         style={{
+          zIndex: 0,
           background: `radial-gradient(600px circle at ${springX}px ${springY}px, rgba(209,9,1,0.05), transparent 70%)`,
         }}
       />
 
       <motion.div
-        className="flex flex-col items-center relative z-10"
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 10 }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <motion.div
-          className="relative w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-10"
-          style={{ boxShadow: '0 0 40px rgba(209,9,1,0.3), 0 0 0 1.5px #d10901' }}
+          style={{
+            position: 'relative',
+            width: '120px',
+            height: '120px',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            marginBottom: '2.5rem',
+            boxShadow: '0 0 40px rgba(209,9,1,0.3), 0 0 0 1.5px #d10901',
+            flexShrink: 0,
+          }}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1 }}
           whileHover={{ scale: 1.05 }}
         >
-          <Image src="/bg.png" alt="Giacomo Ubaldino" fill className="object-cover" priority />
+          <Image src="/bg.png" alt="Giacomo Ubaldino" fill style={{ objectFit: 'cover' }} priority />
         </motion.div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-5">
-          <span className="text-white">Giacomo </span>
-          <span
-            style={{
-              color: 'white',
-              background: 'linear-gradient(to bottom, transparent 52%, rgba(209,9,1,0.5) 52%)',
-              display: 'inline',
-            }}
-          >
+        <h1 style={{
+          fontFamily: 'var(--font-cormorant)',
+          fontSize: 'clamp(2.8rem, 11vw, 6rem)',
+          fontWeight: 700,
+          lineHeight: 1.05,
+          letterSpacing: '-0.01em',
+          marginBottom: '1rem',
+          color: 'white',
+        }}>
+          Giacomo{' '}
+          <span style={{ position: 'relative', display: 'inline-block' }}>
+            <motion.span
+              style={{
+                position: 'absolute',
+                bottom: '3px',
+                left: 0,
+                right: 0,
+                height: '33%',
+                background: 'linear-gradient(to right, #d10901, #6b0000)',
+                boxShadow: '0 0 20px rgba(209,9,1,0.45)',
+                zIndex: -1,
+                transformOrigin: 'left',
+              }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            />
             Ubaldino
           </span>
         </h1>
@@ -62,7 +102,7 @@ export default function Hero() {
           fontFamily: 'var(--font-syne)',
           letterSpacing: '0.22em',
           color: '#d10901',
-          fontSize: '0.65rem',
+          fontSize: '0.62rem',
           fontWeight: 600,
           textTransform: 'uppercase',
         }}>

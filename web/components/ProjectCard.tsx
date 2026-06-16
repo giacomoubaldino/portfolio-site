@@ -1,118 +1,127 @@
 'use client'
 
-import { useRef, useCallback, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import ProjectCard from './ProjectCard'
+import { useState } from 'react'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
+import { urlFor } from '@/sanity/image'
+import VideoModal from './VideoModal'
 
-const CATEGORIES = [
-  { value: 'premium', label: 'Premium', color1: '#d10901', color2: '#6b0000', glow: '0 0 30px rgba(209,9,1,0.5)' },
-  { value: 'pro', label: 'Pro', color1: '#c8a94f', color2: '#7a5f1a', glow: '0 0 30px rgba(200,169,79,0.45)' },
-  { value: 'essential', label: 'Essential', color1: '#888888', color2: '#3a3a3a', glow: '0 0 20px rgba(136,136,136,0.3)' },
-]
+interface Project {
+  _id: string
+  title: string
+  client?: string
+  category: string
+  thumbnail: any
+  videoUrl?: string
+}
 
-function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; projects: any[] }) {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const scrollRef = useRef<HTMLDivElement>(null)
+const CATEGORY_STYLES: Record<string, { border: string; glow: string; topGradient: string }> = {
+  premium: { border: 'rgba(209,9,1,0.55)', glow: 'rgba(209,9,1,0.4)', topGradient: 'rgba(209,9,1,0.18)' },
+  pro: { border: 'rgba(200,169,79,0.5)', glow: 'rgba(200,169,79,0.35)', topGradient: 'rgba(200,169,79,0.14)' },
+  essential: { border: 'rgba(136,136,136,0.4)', glow: 'rgba(136,136,136,0.25)', topGradient: 'rgba(136,136,136,0.1)' },
+}
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'center 55%'],
-  })
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
-
-  const handleWheel = useCallback((e: WheelEvent) => {
-    if (scrollRef.current) {
-      e.preventDefault()
-      scrollRef.current.scrollLeft += e.deltaY + e.deltaX
-    }
-  }, [])
-
-  useEffect(() => {
-    const el = scrollRef.current
-    if (el) el.addEventListener('wheel', handleWheel, { passive: false })
-    return () => { if (el) el.removeEventListener('wheel', handleWheel) }
-  }, [handleWheel])
-
-  return (
-    <motion.div
-      ref={sectionRef}
-      style={{
-        marginBottom: '4rem',
-        background: 'rgba(255,255,255,0.015)',
-        border: '1px solid rgba(255,255,255,0.06)',
-        borderRadius: '20px',
-        padding: '2rem 1.5rem 1.75rem',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-      }}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, margin: '0px 0px -60px 0px' }}
-      transition={{ duration: 0.7 }}
-    >
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h2 style={{
-          fontFamily: 'var(--font-cormorant)',
-          fontSize: 'clamp(3rem, 9vw, 5.5rem)',
-          fontWeight: 700,
-          color: 'white',
-          lineHeight: 1,
-          display: 'inline-block',
-          position: 'relative',
-        }}>
-          <motion.span
-            style={{
-              position: 'absolute',
-              bottom: '4px', left: 0, right: 0,
-              height: '30%',
-              background: `linear-gradient(to right, ${cat.color1}, ${cat.color2})`,
-              boxShadow: cat.glow,
-              zIndex: -1,
-              transformOrigin: 'left',
-              scaleX,
-            }}
-          />
-          {cat.label}
-        </h2>
-      </div>
-
-      <div
-        ref={scrollRef}
-        className="no-scrollbar"
-        style={{
-          display: 'flex',
-          gap: '0.75rem',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          scrollSnapType: 'x mandatory',
-          WebkitOverflowScrolling: 'touch',
-          paddingBottom: '0.5rem',
-        }}
-      >
-        {projects.map(project => (
-          <div
-            key={project._id}
-            className="w-[46vw] sm:w-[30vw] md:w-[280px]"
-            style={{ flexShrink: 0, scrollSnapAlign: 'start' }}
-          >
-            <ProjectCard project={project} />
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  )
+function getYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&\s?]+)/)
+  return match ? match[1] : null
 }
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const [showModal, setShowModal] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const [useFallback, setUseFallback] = useState(false)
+
+  const colors = CATEGORY_STYLES[project.category] || CATEGORY_STYLES.essential
+  const ytId = project.videoUrl ? getYouTubeId(project.videoUrl) : null
+
+  let thumbnailSrc = ''
+  if (project.thumbnail) {
+    thumbnailSrc = urlFor(project.thumbnail).width(800).height(450).url()
+  } else if (ytId) {
+    thumbnailSrc = useFallback
+      ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
+      : `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`
+  }
+
   return (
-    <section id="projects" style={{ padding: '0 1.5rem 6rem' }}>
-      <div style={{ maxWidth: '72rem', margin: '0 auto' }}>
-        {CATEGORIES.map(cat => {
-          const catProjects = projects.filter(p => p.category === cat.value)
-          if (catProjects.length === 0) return null
-          return <CategorySection key={cat.value} cat={cat} projects={catProjects} />
-        })}
-      </div>
-    </section>
+    <>
+      <motion.div
+        onClick={() => project.videoUrl && setShowModal(true)}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
+        style={{
+          position: 'relative',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          cursor: project.videoUrl ? 'pointer' : 'default',
+          aspectRatio: '16/9',
+          background: '#0f0f0f',
+          border: `1px solid ${colors.border}`,
+          boxShadow: isHovered
+            ? `0 0 45px ${colors.glow}, 0 8px 30px rgba(0,0,0,0.6)`
+            : `0 0 12px ${colors.glow}`,
+          transition: 'box-shadow 0.4s ease',
+        }}
+        whileHover={{ y: -5 }}
+        transition={{ duration: 0.3 }}
+      >
+        {thumbnailSrc && (
+          <Image
+            src={thumbnailSrc}
+            alt={project.title}
+            fill
+            unoptimized={!project.thumbnail}
+            style={{
+              objectFit: 'cover',
+              transform: isHovered ? 'scale(1.07)' : 'scale(1)',
+              transition: 'transform 0.6s ease',
+            }}
+            onError={() => { if (!useFallback && ytId) setUseFallback(true) }}
+          />
+        )}
+
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `linear-gradient(to bottom, ${colors.topGradient} 0%, transparent 38%, rgba(5,5,5,0.97) 100%)`,
+        }} />
+
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.3s',
+        }}>
+          <div style={{
+            width: '52px', height: '52px', borderRadius: '50%',
+            background: 'linear-gradient(135deg, #d10901, #6b0000)',
+            boxShadow: '0 0 40px rgba(209,9,1,0.7)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transform: isHovered ? 'scale(1)' : 'scale(0.75)',
+            transition: 'transform 0.3s',
+          }}>
+            <div style={{
+              width: 0, height: 0,
+              borderTop: '9px solid transparent',
+              borderLeft: '15px solid white',
+              borderBottom: '9px solid transparent',
+              marginLeft: '3px',
+            }} />
+          </div>
+        </div>
+
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0.875rem' }}>
+          <h3 style={{ color: 'white', fontWeight: 600, fontSize: '0.85rem', lineHeight: 1.3, marginBottom: project.client ? '0.2rem' : 0 }}>
+            {project.title}
+          </h3>
+          {project.client && (
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.72rem' }}>{project.client}</p>
+          )}
+        </div>
+      </motion.div>
+
+      {showModal && project.videoUrl && (
+        <VideoModal videoUrl={project.videoUrl} title={project.title} onClose={() => setShowModal(false)} />
+      )}
+    </>
   )
 }

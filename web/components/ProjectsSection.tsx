@@ -13,8 +13,8 @@ const CATEGORIES = [
 function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; projects: any[] }) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [hasPeeked, setHasPeeked] = useState(false)
-  const isInView = useInView(sectionRef, { once: true, margin: '0px 0px -100px 0px' })
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const isInView = useInView(sectionRef, { once: true, margin: '0px 0px -80px 0px' })
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -22,26 +22,50 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
   })
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
 
-  // Peek animation quando entra in viewport
+  // Loop lento che si ferma quando l'utente interagisce
   useEffect(() => {
-    if (isInView && !hasPeeked && scrollRef.current) {
-      setHasPeeked(true)
-      const el = scrollRef.current
-      setTimeout(() => {
-        el.scrollTo({ left: 65, behavior: 'smooth' })
-        setTimeout(() => {
-          el.scrollTo({ left: 0, behavior: 'smooth' })
-        }, 550)
-      }, 500)
+    if (!isInView || hasInteracted || !scrollRef.current) return
+    if (projects.length < 3) return
+
+    const el = scrollRef.current
+    let animFrame: number
+    let position = 0
+    let direction = 1
+    const speed = 0.35
+
+    const animate = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth
+      if (maxScroll <= 0) return
+
+      position += speed * direction
+      if (position >= maxScroll) direction = -1
+      if (position <= 0) direction = 1
+
+      el.scrollLeft = position
+      animFrame = requestAnimationFrame(animate)
     }
-  }, [isInView, hasPeeked])
+
+    const timeout = setTimeout(() => {
+      animFrame = requestAnimationFrame(animate)
+    }, 700)
+
+    return () => {
+      cancelAnimationFrame(animFrame)
+      clearTimeout(timeout)
+    }
+  }, [isInView, hasInteracted, projects.length])
+
+  const handleInteraction = useCallback(() => {
+    if (!hasInteracted) setHasInteracted(true)
+  }, [hasInteracted])
 
   const handleWheel = useCallback((e: WheelEvent) => {
     if (scrollRef.current) {
       e.preventDefault()
+      handleInteraction()
       scrollRef.current.scrollLeft += e.deltaY + e.deltaX
     }
-  }, [])
+  }, [handleInteraction])
 
   useEffect(() => {
     const el = scrollRef.current
@@ -92,11 +116,12 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
         </h2>
       </div>
 
-      {/* Wrapper con gradient fade a destra */}
       <div style={{ position: 'relative' }}>
         <div
           ref={scrollRef}
           className="no-scrollbar"
+          onTouchStart={handleInteraction}
+          onMouseDown={handleInteraction}
           style={{
             display: 'flex',
             flexWrap: 'nowrap',
@@ -106,6 +131,7 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
             scrollSnapType: 'x mandatory',
             WebkitOverflowScrolling: 'touch',
             paddingBottom: '0.5rem',
+            cursor: hasInteracted ? 'grab' : 'default',
           }}
         >
           {projects.map((project: any) => (
@@ -123,7 +149,6 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
           ))}
         </div>
 
-        {/* Gradient fade bordo destro */}
         <div style={{
           position: 'absolute',
           top: 0, right: 0, bottom: '0.5rem',
@@ -131,7 +156,6 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
           background: 'linear-gradient(to right, transparent, rgba(8,8,8,0.95))',
           pointerEvents: 'none',
           zIndex: 2,
-          borderRadius: '0 0 8px 0',
         }} />
       </div>
     </motion.div>

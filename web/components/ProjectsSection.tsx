@@ -172,15 +172,7 @@ if (positionRef.current <= 0 && directionRef.current === -1) {
           ))}
         </div>
 
-        <div style={{
-          position: 'absolute',
-          top: 0, right: 0, bottom: '0.5rem',
-          width: '70px',
-          background: 'linear-gradient(to right, transparent, rgba(8,8,8,0.95))',
-          pointerEvents: 'none',
-          zIndex: 2,
-        }} />
-      </div>
+        
     </motion.div>
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useScroll, animate } from 'framer-motion'
 import Image from 'next/image'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null)
@@ -10,6 +10,8 @@ export default function Hero() {
   const mouseY = useMotionValue(0)
   const springX = useSpring(mouseX, { stiffness: 50, damping: 20 })
   const springY = useSpring(mouseY, { stiffness: 50, damping: 20 })
+  const highlightScaleX = useMotionValue(0)
+  const [initialDone, setInitialDone] = useState(false)
 
   useEffect(() => {
     const handleMouse = (e: MouseEvent) => { mouseX.set(e.clientX); mouseY.set(e.clientY) }
@@ -17,11 +19,30 @@ export default function Hero() {
     return () => window.removeEventListener('mousemove', handleMouse)
   }, [mouseX, mouseY])
 
+  // Animazione iniziale 0 → 1
+  useEffect(() => {
+    const controls = animate(highlightScaleX, 1, {
+      duration: 0.9,
+      delay: 0.5,
+      ease: [0.25, 0.1, 0.25, 1],
+      onComplete: () => setInitialDone(true),
+    })
+    return controls.stop
+  }, [highlightScaleX])
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   })
-  const highlightScaleX = useTransform(scrollYProgress, [0, 0.85], [1, 0])
+
+  // Scroll-driven dopo animazione iniziale
+  useEffect(() => {
+    if (!initialDone) return
+    const unsubscribe = scrollYProgress.on('change', (v) => {
+      highlightScaleX.set(Math.max(0, 1 - v / 0.85))
+    })
+    return unsubscribe
+  }, [initialDone, scrollYProgress, highlightScaleX])
 
   return (
     <section

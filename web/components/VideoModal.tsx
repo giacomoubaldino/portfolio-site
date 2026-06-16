@@ -10,7 +10,7 @@ function getEmbedUrl(url: string): string {
   }
   const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&\s?]+)/)
   if (ytMatch) {
-    return `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1&rel=0&modestbranding=1&hd=1`
+    return `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1&controls=0&rel=0&modestbranding=1&hd=1&playsinline=1`
   }
   return url
 }
@@ -20,8 +20,6 @@ export default function VideoModal({ videoUrl, title, onClose }: {
   title: string
   onClose: () => void
 }) {
-  const isShort = videoUrl.includes('/shorts/')
-
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', handleKey)
@@ -36,25 +34,22 @@ export default function VideoModal({ videoUrl, title, onClose }: {
     <div
       style={{
         position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(0,0,0,0.92)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        background: 'rgba(0,0,0,0.93)',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '1rem',
+        padding: '1.5rem',
       }}
       onClick={onClose}
     >
       <button
         onClick={onClose}
         style={{
-          position: 'fixed', top: '1rem', right: '1rem',
-          zIndex: 1001,
-          background: 'rgba(0,0,0,0.8)',
-          border: '2px solid rgba(255,255,255,0.35)',
-          borderRadius: '50%',
-          width: '46px', height: '46px',
-          color: 'white', fontSize: '1.1rem',
-          cursor: 'pointer',
+          position: 'fixed', top: '1rem', right: '1rem', zIndex: 1001,
+          background: 'rgba(0,0,0,0.75)',
+          border: '2px solid rgba(255,255,255,0.3)',
+          borderRadius: '50%', width: '48px', height: '48px',
+          color: 'white', fontSize: '1.1rem', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}
       >
@@ -63,19 +58,18 @@ export default function VideoModal({ videoUrl, title, onClose }: {
 
       <motion.div
         style={{
-          width: '100%',
-          maxWidth: isShort ? '340px' : '880px',
-          borderRadius: '16px',
-          overflow: 'hidden',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.8)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          width: '100%', maxWidth: '720px',
+          borderRadius: '16px', overflow: 'hidden',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.9)',
+          border: '1px solid rgba(255,255,255,0.07)',
+          background: '#000',
         }}
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.3 }}
         onClick={e => e.stopPropagation()}
       >
-        <div style={{ aspectRatio: isShort ? '9/16' : '16/9', background: '#000' }}>
+        <div style={{ aspectRatio: '16/9' }}>
           <iframe
             src={getEmbedUrl(videoUrl)}
             style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}

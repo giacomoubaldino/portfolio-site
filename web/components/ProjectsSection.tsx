@@ -48,16 +48,16 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
       positionRef.current += 0.45 * directionRef.current * (delta / 16.67)
 
       if (positionRef.current >= maxScroll) {
-  positionRef.current = maxScroll
-  directionRef.current = -1
-}
+        positionRef.current = maxScroll
+        directionRef.current = -1
+      }
 
-if (positionRef.current <= 0 && directionRef.current === -1) {
-  positionRef.current = 0
-  el.scrollLeft = 0
-  setIsAnimating(false)
-  return
-}
+      if (positionRef.current <= 0 && directionRef.current === -1) {
+        positionRef.current = 0
+        el.scrollLeft = 0
+        setIsAnimating(false)
+        return
+      }
 
       el.scrollLeft = Math.round(positionRef.current)
       animRef.current = requestAnimationFrame(animate)
@@ -140,7 +140,7 @@ if (positionRef.current <= 0 && directionRef.current === -1) {
         </h2>
       </div>
 
-      <div style={{ position: 'relative' }}>
+      <div>
         <div
           ref={scrollRef}
           className="no-scrollbar"
@@ -171,8 +171,7 @@ if (positionRef.current <= 0 && directionRef.current === -1) {
             </div>
           ))}
         </div>
-
-        
+      </div>
     </motion.div>
   )
 }

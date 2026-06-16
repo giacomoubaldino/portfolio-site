@@ -54,7 +54,7 @@ export default function ProjectCard({ project }: { project: Project }) {
           borderRadius: '16px',
           overflow: 'hidden',
           cursor: project.videoUrl ? 'pointer' : 'default',
-          aspectRatio: '16/9',
+          aspectRatio: '4/5',
           background: '#0f0f0f',
           border: `1px solid ${colors.border}`,
           boxShadow: isHovered
@@ -88,7 +88,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         <div style={{
           position: 'absolute', inset: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          opacity: isHovered ? 1 : 0,
+          opacity: isHovered ? 1 : 0.55,
           transition: 'opacity 0.3s',
         }}>
           <div style={{

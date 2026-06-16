@@ -10,7 +10,7 @@ function getEmbedUrl(url: string): string {
   }
   const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&\s?]+)/)
   if (ytMatch) {
-    return `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1&rel=0&modestbranding=1&hd=1&vq=hd1080`
+    return `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1&rel=0&modestbranding=1&hd=1`
   }
   return url
 }
@@ -44,8 +44,10 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
       >
         <motion.div
           style={{
-            position: 'relative', width: '100%', maxWidth: '920px',
-            borderRadius: '18px', overflow: 'hidden',
+            width: '100%',
+            maxWidth: '680px',
+            borderRadius: '18px',
+            overflow: 'hidden',
             boxShadow: '0 0 80px rgba(209,9,1,0.15), 0 30px 80px rgba(0,0,0,0.9)',
             border: '1px solid rgba(255,255,255,0.08)',
           }}
@@ -55,6 +57,46 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           onClick={e => e.stopPropagation()}
         >
+          {/* Header con titolo e bottone chiudi */}
+          <div style={{
+            background: '#111',
+            padding: '0.875rem 1rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+          }}>
+            <span style={{
+              color: 'rgba(255,255,255,0.7)',
+              fontSize: '0.8rem',
+              fontFamily: 'var(--font-syne)',
+              letterSpacing: '0.05em',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: '80%',
+            }}>
+              {title}
+            </span>
+            <motion.button
+              onClick={onClose}
+              style={{
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '50%',
+                width: '36px', height: '36px',
+                color: 'white', cursor: 'pointer',
+                fontSize: '0.9rem',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}
+              whileHover={{ background: 'rgba(209,9,1,0.4)', borderColor: '#d10901' }}
+            >
+              ✕
+            </motion.button>
+          </div>
+
+          {/* Video 16:9 */}
           <div style={{ aspectRatio: '16/9', background: '#000' }}>
             <iframe
               src={getEmbedUrl(videoUrl)}
@@ -64,21 +106,6 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
             />
           </div>
         </motion.div>
-
-        <motion.button
-          onClick={onClose}
-          style={{
-            position: 'fixed', top: '1.25rem', right: '1.25rem',
-            background: 'rgba(255,255,255,0.07)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            borderRadius: '50%', width: '44px', height: '44px',
-            color: 'white', cursor: 'pointer', fontSize: '1rem',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-          whileHover={{ background: 'rgba(209,9,1,0.3)', borderColor: '#d10901' }}
-        >
-          ✕
-        </motion.button>
       </motion.div>
     </AnimatePresence>
   )

@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="it" className={`${cormorant.variable} ${syne.variable} ${inter.variable}`}>
       <head>
-  <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+  <link rel="icon" href="/icon.ico" type="image/x-icon" />
 </head>
       <body style={{ fontFamily: 'var(--font-inter)' }}>
         <Navigation />

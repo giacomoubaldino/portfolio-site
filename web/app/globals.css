@@ -46,3 +46,6 @@ body::after {
   background-size: 180px 180px;
   background-repeat: repeat;
 }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }

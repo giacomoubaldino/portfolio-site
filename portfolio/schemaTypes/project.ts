@@ -38,12 +38,11 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'thumbnail',
-      title: 'Copertina',
-      type: 'image',
-      options: { hotspot: true },
-      validation: Rule => Rule.required(),
-    }),
+  name: 'thumbnail',
+  title: 'Copertina (opzionale per YouTube)',
+  type: 'image',
+  options: { hotspot: true },
+}),
     defineField({
       name: 'videoUrl',
       title: 'URL Video (Vimeo / YouTube)',

@@ -98,19 +98,7 @@ export default function VideoModal({ videoUrl, title, onClose }: {
             {title}
           </span>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button
-              onClick={() => iframeRef.current?.requestFullscreen?.()}
-              style={{
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: '8px',
-                width: '34px', height: '34px',
-                color: 'rgba(255,255,255,0.7)',
-                cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1rem',
-              }}
-            >⛶</button>
+            
             <button
               onClick={onClose}
               style={{

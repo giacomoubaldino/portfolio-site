@@ -1,7 +1,7 @@
 import { groq } from 'next-sanity'
 
 export const projectsQuery = groq`
-  *[_type == "project"] | order(date desc) {
+  *[_type == "project"] | order(order asc, date desc) {
     _id,
     title,
     slug,
@@ -11,6 +11,7 @@ export const projectsQuery = groq`
     videoUrl,
     description,
     date,
-    featured
+    featured,
+    order
   }
 `

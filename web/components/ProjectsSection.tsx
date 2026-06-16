@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useCallback, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useCallback, useEffect, useState } from 'react'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import ProjectCard from './ProjectCard'
 
 const CATEGORIES = [
@@ -13,12 +13,28 @@ const CATEGORIES = [
 function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; projects: any[] }) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [hasPeeked, setHasPeeked] = useState(false)
+  const isInView = useInView(sectionRef, { once: true, margin: '0px 0px -100px 0px' })
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'center 55%'],
   })
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
+
+  // Peek animation quando entra in viewport
+  useEffect(() => {
+    if (isInView && !hasPeeked && scrollRef.current) {
+      setHasPeeked(true)
+      const el = scrollRef.current
+      setTimeout(() => {
+        el.scrollTo({ left: 65, behavior: 'smooth' })
+        setTimeout(() => {
+          el.scrollTo({ left: 0, behavior: 'smooth' })
+        }, 550)
+      }, 500)
+    }
+  }, [isInView, hasPeeked])
 
   const handleWheel = useCallback((e: WheelEvent) => {
     if (scrollRef.current) {
@@ -76,33 +92,47 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
         </h2>
       </div>
 
-      <div
-        ref={scrollRef}
-        className="no-scrollbar"
-        style={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          gap: '0.75rem',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          scrollSnapType: 'x mandatory',
-          WebkitOverflowScrolling: 'touch',
-          paddingBottom: '0.5rem',
-        }}
-      >
-        {projects.map(project => (
-          <div
-            key={project._id}
-            style={{
-              flexShrink: 0,
-              width: '46vw',
-              maxWidth: '280px',
-              scrollSnapAlign: 'start',
-            }}
-          >
-            <ProjectCard project={project} />
-          </div>
-        ))}
+      {/* Wrapper con gradient fade a destra */}
+      <div style={{ position: 'relative' }}>
+        <div
+          ref={scrollRef}
+          className="no-scrollbar"
+          style={{
+            display: 'flex',
+            flexWrap: 'nowrap',
+            gap: '0.75rem',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            scrollSnapType: 'x mandatory',
+            WebkitOverflowScrolling: 'touch',
+            paddingBottom: '0.5rem',
+          }}
+        >
+          {projects.map((project: any) => (
+            <div
+              key={project._id}
+              style={{
+                flexShrink: 0,
+                width: '38vw',
+                maxWidth: '280px',
+                scrollSnapAlign: 'start',
+              }}
+            >
+              <ProjectCard project={project} />
+            </div>
+          ))}
+        </div>
+
+        {/* Gradient fade bordo destro */}
+        <div style={{
+          position: 'absolute',
+          top: 0, right: 0, bottom: '0.5rem',
+          width: '70px',
+          background: 'linear-gradient(to right, transparent, rgba(8,8,8,0.95))',
+          pointerEvents: 'none',
+          zIndex: 2,
+          borderRadius: '0 0 8px 0',
+        }} />
       </div>
     </motion.div>
   )

@@ -65,6 +65,12 @@ export default defineType({
       type: 'boolean',
       initialValue: false,
     }),
+    defineField({
+  name: 'order',
+  title: 'Ordine di visualizzazione',
+  type: 'number',
+  initialValue: 99,
+}),
   ],
   preview: {
     select: {
@@ -73,4 +79,5 @@ export default defineType({
       media: 'thumbnail',
     },
   },
+  
 })

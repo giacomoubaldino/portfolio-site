@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 
 function getEmbedUrl(url: string): string {
@@ -25,14 +26,24 @@ export default function VideoModal({ videoUrl, title, onClose }: {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', handleKey)
+
+    const scrollY = window.scrollY
     document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+
     return () => {
       document.removeEventListener('keydown', handleKey)
       document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, scrollY)
     }
   }, [onClose])
 
-  return (
+  const modal = (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -42,7 +53,7 @@ export default function VideoModal({ videoUrl, title, onClose }: {
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 1000,
+        zIndex: 9999,
         background: 'rgba(0,0,0,0.88)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
@@ -51,7 +62,6 @@ export default function VideoModal({ videoUrl, title, onClose }: {
         padding: '1rem',
       }}
     >
-      {/* Popup */}
       <motion.div
         initial={{ opacity: 0, scale: 0.85, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -59,17 +69,15 @@ export default function VideoModal({ videoUrl, title, onClose }: {
         transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
         onClick={e => e.stopPropagation()}
         style={{
-          position: 'relative',
           width: '90vw',
           maxWidth: '700px',
           background: '#0f0f0f',
           borderRadius: '18px',
           overflow: 'hidden',
           border: '1px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 30px 100px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.05)',
+          boxShadow: '0 30px 100px rgba(0,0,0,0.95)',
         }}
       >
-        {/* Barra superiore del popup */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -82,7 +90,6 @@ export default function VideoModal({ videoUrl, title, onClose }: {
             color: 'rgba(255,255,255,0.5)',
             fontSize: '0.75rem',
             fontFamily: 'var(--font-syne)',
-            letterSpacing: '0.05em',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -90,9 +97,7 @@ export default function VideoModal({ videoUrl, title, onClose }: {
           }}>
             {title}
           </span>
-
-          <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
-            {/* Fullscreen */}
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
             <button
               onClick={() => iframeRef.current?.requestFullscreen?.()}
               style={{
@@ -105,11 +110,7 @@ export default function VideoModal({ videoUrl, title, onClose }: {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '1rem',
               }}
-            >
-              ⛶
-            </button>
-
-            {/* Chiudi */}
+            >⛶</button>
             <button
               onClick={onClose}
               style={{
@@ -123,13 +124,10 @@ export default function VideoModal({ videoUrl, title, onClose }: {
                 fontSize: '1rem',
                 fontWeight: 600,
               }}
-            >
-              ✕
-            </button>
+            >✕</button>
           </div>
         </div>
 
-        {/* Video */}
         <div style={{ position: 'relative', aspectRatio: '16/9', background: '#000' }}>
           <iframe
             ref={iframeRef}
@@ -148,4 +146,6 @@ export default function VideoModal({ videoUrl, title, onClose }: {
       </motion.div>
     </motion.div>
   )
+
+  return createPortal(modal, document.body)
 }

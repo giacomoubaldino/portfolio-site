@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { urlFor } from '@/sanity/image'
 import VideoModal from './VideoModal'
+
 
 interface Project {
   _id: string
@@ -119,9 +120,20 @@ export default function ProjectCard({ project }: { project: Project }) {
         </div>
       </motion.div>
 
-      {showModal && project.videoUrl && (
-        <VideoModal videoUrl={project.videoUrl} title={project.title} onClose={() => setShowModal(false)} />
-      )}
+      
+
+// ...
+
+<AnimatePresence>
+  {showModal && project.videoUrl && (
+    <VideoModal
+      key="modal"
+      videoUrl={project.videoUrl}
+      title={project.title}
+      onClose={() => setShowModal(false)}
+    />
+  )}
+</AnimatePresence>
     </>
   )
 }

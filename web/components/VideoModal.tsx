@@ -32,93 +32,106 @@ export default function VideoModal({ videoUrl, title, onClose }: {
     }
   }, [onClose])
 
-  const handleFullscreen = () => {
-    iframeRef.current?.requestFullscreen?.()
-  }
-
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
       style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
+        position: 'fixed',
+        top: 0, left: 0,
+        width: '100vw', height: '100vh',
+        zIndex: 1000,
         background: 'rgba(0,0,0,0.93)',
-        backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '1rem',
+        padding: '72px 1rem 1rem',
       }}
       onClick={onClose}
     >
+      {/* X button sempre visibile */}
+      <motion.button
+        onClick={(e) => { e.stopPropagation(); onClose() }}
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.7 }}
+        transition={{ delay: 0.15, duration: 0.2 }}
+        whileHover={{ scale: 1.08, background: 'rgba(209,9,1,0.5)' }}
+        whileTap={{ scale: 0.93 }}
+        style={{
+          position: 'absolute',
+          top: '1rem', right: '1rem',
+          zIndex: 1002,
+          background: 'rgba(209,9,1,0.2)',
+          border: '1.5px solid rgba(209,9,1,0.55)',
+          borderRadius: '50%',
+          width: '50px', height: '50px',
+          color: 'white', cursor: 'pointer',
+          fontSize: '1.1rem',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}
+      >
+        ✕
+      </motion.button>
+
+      {/* Modal */}
       <motion.div
+        initial={{ opacity: 0, scale: 0.86, y: 32 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.86, y: 32 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
         style={{
           width: '100%',
           maxWidth: '720px',
           borderRadius: '16px',
           overflow: 'hidden',
           background: '#111',
-          boxShadow: '0 20px 80px rgba(0,0,0,0.9)',
+          boxShadow: '0 0 60px rgba(209,9,1,0.12), 0 24px 80px rgba(0,0,0,0.95)',
           border: '1px solid rgba(255,255,255,0.08)',
         }}
-        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
         onClick={e => e.stopPropagation()}
       >
-        {/* Header con X e fullscreen */}
+        {/* Header */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0.7rem 1rem',
+          padding: '0.65rem 1rem',
           borderBottom: '1px solid rgba(255,255,255,0.06)',
         }}>
           <span style={{
-            color: 'rgba(255,255,255,0.5)',
-            fontSize: '0.76rem',
+            color: 'rgba(255,255,255,0.45)',
+            fontSize: '0.74rem',
             fontFamily: 'var(--font-syne)',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-            maxWidth: 'calc(100% - 100px)',
+            maxWidth: 'calc(100% - 52px)',
           }}>
             {title}
           </span>
-
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button
-              onClick={handleFullscreen}
-              title="Schermo intero"
-              style={{
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                borderRadius: '8px',
-                width: '36px', height: '36px',
-                color: 'white', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1rem',
-              }}
-            >
-              ⛶
-            </button>
-            <button
-              onClick={onClose}
-              style={{
-                background: 'rgba(209,9,1,0.15)',
-                border: '1px solid rgba(209,9,1,0.4)',
-                borderRadius: '8px',
-                width: '36px', height: '36px',
-                color: 'white', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1rem',
-              }}
-            >
-              ✕
-            </button>
-          </div>
+          <button
+            onClick={() => iframeRef.current?.requestFullscreen?.()}
+            title="Schermo intero"
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '7px',
+              width: '32px', height: '32px',
+              color: 'white', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '0.95rem', flexShrink: 0,
+            }}
+          >
+            ⛶
+          </button>
         </div>
 
-        {/* Video con overlay che copre il titolo YouTube */}
+        {/* Video */}
         <div style={{ position: 'relative', aspectRatio: '16/9', background: '#000' }}>
           <iframe
             ref={iframeRef}
@@ -127,17 +140,13 @@ export default function VideoModal({ videoUrl, title, onClose }: {
             allow="autoplay; fullscreen; picture-in-picture"
             allowFullScreen
           />
-          {/* Copre il titolo YouTube in alto */}
           <div style={{
-            position: 'absolute',
-            top: 0, left: 0, right: 0,
-            height: '72px',
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%)',
-            pointerEvents: 'none',
-            zIndex: 1,
+            position: 'absolute', top: 0, left: 0, right: 0, height: '56px',
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)',
+            pointerEvents: 'none', zIndex: 1,
           }} />
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   )
 }

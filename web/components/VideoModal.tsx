@@ -15,7 +15,15 @@ function getEmbedUrl(url: string): string {
   return url
 }
 
-export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: string; title: string; onClose: () => void }) {
+function isShort(url: string): boolean {
+  return url.includes('/shorts/')
+}
+
+export default function VideoModal({ videoUrl, title, onClose }: {
+  videoUrl: string
+  title: string
+  onClose: () => void
+}) {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', handleKey)
@@ -25,6 +33,8 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
       document.body.style.overflow = ''
     }
   }, [onClose])
+
+  const short = isShort(videoUrl)
 
   return (
     <AnimatePresence>
@@ -45,7 +55,7 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
         <motion.div
           style={{
             width: '100%',
-            maxWidth: '680px',
+            maxWidth: short ? '380px' : '900px',
             borderRadius: '18px',
             overflow: 'hidden',
             boxShadow: '0 0 80px rgba(209,9,1,0.15), 0 30px 80px rgba(0,0,0,0.9)',
@@ -57,20 +67,18 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           onClick={e => e.stopPropagation()}
         >
-          {/* Header con titolo e bottone chiudi */}
           <div style={{
             background: '#111',
-            padding: '0.875rem 1rem',
+            padding: '0.75rem 1rem',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
           }}>
             <span style={{
-              color: 'rgba(255,255,255,0.7)',
-              fontSize: '0.8rem',
+              color: 'rgba(255,255,255,0.6)',
+              fontSize: '0.78rem',
               fontFamily: 'var(--font-syne)',
-              letterSpacing: '0.05em',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -84,9 +92,9 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
                 background: 'rgba(255,255,255,0.07)',
                 border: '1px solid rgba(255,255,255,0.12)',
                 borderRadius: '50%',
-                width: '36px', height: '36px',
+                width: '34px', height: '34px',
                 color: 'white', cursor: 'pointer',
-                fontSize: '0.9rem',
+                fontSize: '0.85rem',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
               }}
@@ -96,8 +104,7 @@ export default function VideoModal({ videoUrl, title, onClose }: { videoUrl: str
             </motion.button>
           </div>
 
-          {/* Video 16:9 */}
-          <div style={{ aspectRatio: '16/9', background: '#000' }}>
+          <div style={{ aspectRatio: short ? '9/16' : '16/9', background: '#000' }}>
             <iframe
               src={getEmbedUrl(videoUrl)}
               style={{ width: '100%', height: '100%', border: 'none' }}

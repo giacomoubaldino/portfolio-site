@@ -122,7 +122,7 @@ export default function ProjectCard({ project }: { project: Project }) {
 
       
 
-// ...
+
 
 <AnimatePresence>
   {showModal && project.videoUrl && (

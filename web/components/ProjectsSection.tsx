@@ -15,6 +15,9 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
   const scrollRef = useRef<HTMLDivElement>(null)
   const [hasInteracted, setHasInteracted] = useState(false)
   const isInView = useInView(sectionRef, { once: true, margin: '0px 0px -80px 0px' })
+  const animRef = useRef<number>(0)
+  const positionRef = useRef(0)
+  const lastTimeRef = useRef(0)
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -22,41 +25,48 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
   })
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
 
-  // Loop lento che si ferma quando l'utente interagisce
   useEffect(() => {
     if (!isInView || hasInteracted || !scrollRef.current) return
     if (projects.length < 3) return
 
     const el = scrollRef.current
-    let animFrame: number
-    let position = 0
-    let direction = 1
-    const speed = 0.35
+    el.style.scrollSnapType = 'none'
+    positionRef.current = 0
 
-    const animate = () => {
+    const animate = (timestamp: number) => {
+      if (!lastTimeRef.current) lastTimeRef.current = timestamp
+      const delta = Math.min(timestamp - lastTimeRef.current, 50)
+      lastTimeRef.current = timestamp
+
       const maxScroll = el.scrollWidth - el.clientWidth
       if (maxScroll <= 0) return
 
-      position += speed * direction
-      if (position >= maxScroll) direction = -1
-      if (position <= 0) direction = 1
+      positionRef.current += 0.5 * (delta / 16.67)
+      if (positionRef.current >= maxScroll) positionRef.current = 0
 
-      el.scrollLeft = position
-      animFrame = requestAnimationFrame(animate)
+      el.scrollLeft = positionRef.current
+      animRef.current = requestAnimationFrame(animate)
     }
 
     const timeout = setTimeout(() => {
-      animFrame = requestAnimationFrame(animate)
-    }, 700)
+      lastTimeRef.current = 0
+      animRef.current = requestAnimationFrame(animate)
+    }, 600)
 
     return () => {
-      cancelAnimationFrame(animFrame)
+      cancelAnimationFrame(animRef.current)
       clearTimeout(timeout)
     }
   }, [isInView, hasInteracted, projects.length])
 
   const handleInteraction = useCallback(() => {
-    if (!hasInteracted) setHasInteracted(true)
+    if (!hasInteracted) {
+      cancelAnimationFrame(animRef.current)
+      setHasInteracted(true)
+      if (scrollRef.current) {
+        scrollRef.current.style.scrollSnapType = 'x mandatory'
+      }
+    }
   }, [hasInteracted])
 
   const handleWheel = useCallback((e: WheelEvent) => {
@@ -131,7 +141,6 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
             scrollSnapType: 'x mandatory',
             WebkitOverflowScrolling: 'touch',
             paddingBottom: '0.5rem',
-            cursor: hasInteracted ? 'grab' : 'default',
           }}
         >
           {projects.map((project: any) => (

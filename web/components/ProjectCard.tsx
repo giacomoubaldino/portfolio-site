@@ -103,7 +103,7 @@ function CategorySection({ cat, projects }: { cat: typeof CATEGORIES[0]; project
   )
 }
 
-export default function ProjectsSection({ projects }: { projects: any[] }) {
+export default function ProjectCard({ project }: { project: Project }) {
   return (
     <section id="projects" style={{ padding: '0 1.5rem 6rem' }}>
       <div style={{ maxWidth: '72rem', margin: '0 auto' }}>
